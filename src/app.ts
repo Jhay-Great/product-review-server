@@ -1,4 +1,4 @@
-import express, { ErrorRequestHandler, Request, Response } from 'express';
+import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
-app.use((err:Error, req:Request, res:Response) => {
+app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
     if (err.message === 'Not allowed by CORS') {
         res.status(403).json({ error: 'CORS Error: Origin not allowed' });
         return;
