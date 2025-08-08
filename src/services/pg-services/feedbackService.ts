@@ -18,7 +18,7 @@ export const getAllFeedbacks = async function() {
 }
 
 export const getFeedbackById = async function(id: string) {
-    const response = await pool.query(`SELECT FROM ${FEEDBACK_DB} WHERE id = $1`, [id]);
+    const response = await pool.query(`SELECT * FROM ${FEEDBACK_DB} WHERE id = $1`, [id]);
     return response.rows;
 }
 

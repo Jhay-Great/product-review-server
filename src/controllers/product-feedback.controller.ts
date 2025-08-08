@@ -30,11 +30,15 @@ export const getAllProductFeedbacks = async function(req: Request, res:Response)
 
 export const getProductFeedback = async function(req:Request, res:Response) {
     try {
-        const id = req.params.feedback;
+        const id = req.params.feedbackId;
+        // if (!id) {
+        //     throw new Error('Data not available');
+        // }
+        
         // make request based on id;
         const response = await getFeedbackById(id);
 
-        if (!response) {
+        if (!response.length) {
             res.status(404).json({
                 success: false,
                 message: 'Item could not be found',
