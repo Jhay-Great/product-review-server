@@ -17,6 +17,12 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.status(404).json({
+        status: 404,
+        message: 'Resource not found',
+    })
+}) 
 app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
     if (err.message === 'Not allowed by CORS') {
         res.status(403).json({ error: 'CORS Error: Origin not allowed' });
