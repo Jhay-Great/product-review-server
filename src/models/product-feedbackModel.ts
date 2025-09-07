@@ -6,8 +6,11 @@ export interface IFeedback extends Document, Omit<Feedback, "id"> {}
 
 const UserSchema = new Schema<User>({
     image: {type: String, },
-    name: { type: String, },
+    firstname: { type: String, },
+    lastname: { type: String, },
+    email: { type: String },
     username: { type: String, },
+    password: { type: String },
 })
 
 const CommentSchema = new Schema<Comment>(
