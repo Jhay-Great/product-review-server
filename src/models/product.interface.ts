@@ -22,11 +22,29 @@ export interface Comment {
 export interface User {
   image: string;
   name: string;
+  firstname: string;
+  lastname: string;
   username: string;
+  email: string;
+  password: string;
 }
 
 export interface CreateFeedback {
   title: string;
   category: string;
   description: string;
+}
+
+export interface UserLogin {
+  email: string;
+  password: string;
+}
+
+export interface UserRegistration {
+  firstname: string;
+  lastname: string;
+  email: string;
+  username:string;
+  password: string;
+  confirmPassword: string;
 }
