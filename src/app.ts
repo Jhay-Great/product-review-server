@@ -15,15 +15,13 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
-app.use((req: Request, res: Response, next: NextFunction) => {
-    res.status(404).json({
-        status: 404,
-        message: 'Resource not found',
-    })
-}) 
-app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
+
+// single catch-all for unmatched routes — forward a NotFoundError to the global handler
+app.use((req:Request, res:Response, next:NextFunction) => {
     next(new NotFoundError(`Route ${req.method} ${req.url} not found`));
 });
+
+// global error handling
 app.use(errorHandler)
 
 export default app;
