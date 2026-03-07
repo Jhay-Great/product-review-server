@@ -3,6 +3,8 @@ import morgan from 'morgan';
 
 import router from './routes';
 import corsConfig from './config/corsConfig';
+import { errorHandler } from './middleware/errorHandler';
+import { NotFoundError } from './utils/errors/httpErrors';
 
 const app = express();
 
@@ -20,14 +22,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     })
 }) 
 app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
-    if (err.message === 'Not allowed by CORS') {
-        res.status(403).json({ error: 'CORS Error: Origin not allowed' });
-        return;
-    };
-    
-    res.status(500).json({
-        message: 'Server error',
-    })
+    next(new NotFoundError(`Route ${req.method} ${req.url} not found`));
 });
+app.use(errorHandler)
 
 export default app;
