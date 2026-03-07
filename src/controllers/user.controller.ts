@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { comparePassword } from "../utils/hash";
 import {
   userLogin,
   userRegistration,
 } from "../services/pg-services/userServices";
 import { generateToken } from "../utils/jwt";
+import { NotFoundError, UnauthorizedError, ConflictError } from "../utils/errors/httpErrors";
 
 export const login = async (req: Request, res: Response) => {
   const loginData = req.body;
@@ -14,22 +15,14 @@ export const login = async (req: Request, res: Response) => {
     const response = await userLogin(loginData);
 
     if (response.length === 0) {
-      res.status(401).json({
-        success: false,
-        message: "Email does not exist",
-      });
-      return;
+      throw new NotFoundError("Email does not exist");
     }
 
     const hashedPassword = response[0].password;
     const isMatch = await comparePassword(loginData.password, hashedPassword);
 
     if (!isMatch) {
-      res.status(401).json({
-        success: false,
-        message: "Password is incorrect",
-      });
-      return;
+      throw new UnauthorizedError("Password is incorrect");
     }
 
     const { password, ...userData } = response[0];
@@ -47,7 +40,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response, next:NextFunction) => {
   const registrationData = req.body;
 
   try {
@@ -62,11 +55,7 @@ export const register = async (req: Request, res: Response) => {
   } catch (error: unknown) {
     if (error instanceof Error) {
       // refactor later (handle it properly)
-      res.status(401).json({
-        success: false,
-        meesage: "Duplicate email",
-      });
-      return;
+      return next(new ConflictError("Duplicate email"));
     }
     throw error;
   }
