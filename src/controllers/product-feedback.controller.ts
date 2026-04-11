@@ -1,10 +1,4 @@
 import { Request, Response } from 'express';
-// import { 
-//     getAllFeedbacks, 
-//     getFeedbackById, 
-//     createFeeback,
-//     deleteFeedback,
-//  } from '../services/feedbackService';
 import { 
     getAllFeedbacks, 
     getFeedbackById, 
