@@ -8,16 +8,20 @@ import {
     upvoteFeedback,
  } from './feedback.service';
 import { NotFoundError } from '../../utils/errors/httpErrors';
+import { UpdateFeedback } from '../../types/models';
 
 export const getAllProductFeedbacks = async function(req: Request, res:Response, next: NextFunction) {
     try {
-        const data = await getAllFeedbacks();
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const data = await getAllFeedbacks(page, limit);
 
         res.status(200).json({
             success: true,
             message: 'Successful',
-            data: data,
-        })
+            data,
+            meta: { page, limit },
+        });
     } catch (error) {
         next(error);
     }
@@ -66,7 +70,7 @@ export const createProductFeedback = async function(req:Request, res:Response, n
 export const updateProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
-        const feedback = req.body;
+        const feedback = req.body as UpdateFeedback;
         // make request based on id;
         const response = await editFeedback(id, feedback);
 

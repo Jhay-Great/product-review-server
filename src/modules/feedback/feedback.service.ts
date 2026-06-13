@@ -1,5 +1,5 @@
 import pool from "../../config/database";
-import { CreateFeedback } from "../../types/models";
+import { CreateFeedback, UpdateFeedback } from "../../types/models";
 
 const FEEDBACK_DB = 'feedback';
 
@@ -12,8 +12,12 @@ export const createFeeback = async function(data: CreateFeedback, userId: string
     console.log('rows: ', rows);
     return rows;
 }
-export const getAllFeedbacks = async function() {
-    const data =  await pool.query(`SELECT * FROM feedback`);
+export const getAllFeedbacks = async function(page: number = 1, limit: number = 10) {
+    const offset = (page - 1) * limit;
+    const data = await pool.query(
+        `SELECT * FROM feedback ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+        [limit, offset]
+    );
     return data.rows;
 }
 
@@ -22,7 +26,7 @@ export const getFeedbackById = async function(id: string) {
     return response.rows;
 }
 
-export const editFeedback = async function(id: string, data:any) {
+export const editFeedback = async function(id: string, data: UpdateFeedback) {
     const { title, category, description, status } = data;
     const { rows } = await pool.query(
         'UPDATE feedback SET title = $1, category = $2, description = $3, status = $4 WHERE id = $5 RETURNING *',

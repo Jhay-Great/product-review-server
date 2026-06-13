@@ -5,9 +5,10 @@ import { UserLogin, UserRegistration } from "../../types/models";
 
 export const userLogin = async (loginData: UserLogin) => {
   const { email } = loginData;
-  const { rows } = await pool.query(`SELECT * FROM USERS WHERE email = $1`, [
-    email,
-  ]);
+  const { rows } = await pool.query(
+    `SELECT id, firstname, lastname, email, username, password FROM users WHERE email = $1`,
+    [email]
+  );
   return rows;
 };
 

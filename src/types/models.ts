@@ -35,6 +35,13 @@ export interface CreateFeedback {
   description: string;
 }
 
+export interface UpdateFeedback {
+  title?: string;
+  category?: string;
+  description?: string;
+  status?: string;
+}
+
 export interface UserLogin {
   email: string;
   password: string;

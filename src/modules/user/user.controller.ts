@@ -58,9 +58,7 @@ export const forgottenPassword = async (req: Request, res: Response, next: NextF
     const frontend = process.env.FRONTEND_URL || 'http://localhost:4200';
     const resetUrl = `${frontend}/reset-password?token=${result.token}&email=${encodeURIComponent(result.email)}`;
 
-    console.log('about to create mail');
-    const messagePreview = await sendResetPasswordEmail(result.email, resetUrl);
-    console.log(messagePreview);
+    await sendResetPasswordEmail(result.email, resetUrl);
 
     return res.status(200).json({ success: true, message: 'If that email exists, a reset link has been sent.' });
   } catch (error) {
@@ -85,4 +83,3 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const deleteUser = (req: Request, res: Response) => {};

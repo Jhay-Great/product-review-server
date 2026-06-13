@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
+import helmet from 'helmet';
 
 import router from './routes';
 import corsConfig from './config/cors';
@@ -7,6 +8,8 @@ import { errorHandler } from './middleware/error.middleware';
 import { NotFoundError } from './utils/errors/httpErrors';
 
 const app = express();
+
+app.use(helmet());
 
 app.use(corsConfig);
 
