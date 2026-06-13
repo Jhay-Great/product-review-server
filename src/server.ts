@@ -1,6 +1,14 @@
 import dotenv from 'dotenv'
 dotenv.config();
 
+const requiredEnv = ['JWT_SECRET', 'PG_HOST', 'PG_DATABASE', 'PG_USER', 'PG_PASSWORD'];
+for (const key of requiredEnv) {
+    if (!process.env[key]) {
+        console.error(`Missing required environment variable: ${key}`);
+        process.exit(1);
+    }
+}
+
 import app from './app';
 import pool, { checkDBServer } from './config/database';
 

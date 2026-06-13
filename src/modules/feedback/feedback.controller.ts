@@ -31,7 +31,6 @@ export const getProductFeedback = async function(req:Request, res:Response, next
     try {
         const id = req.params.feedbackId;
 
-        // make request based on id;
         const response = await getFeedbackById(id);
 
         if (!response.length) {
@@ -52,10 +51,7 @@ export const createProductFeedback = async function(req:Request, res:Response, n
     try {
         const data = req.body;
         const userId = req.authUser!.userId;
-        console.log('data from client: ', data);
-        // make request
         const response = await createFeeback(data, userId);
-        console.log('response: ', response);
 
         res.status(200).json({
             success: true,
@@ -70,9 +66,13 @@ export const createProductFeedback = async function(req:Request, res:Response, n
 export const updateProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
+        const userId = req.authUser!.userId;
         const feedback = req.body as UpdateFeedback;
-        // make request based on id;
-        const response = await editFeedback(id, feedback);
+        const response = await editFeedback(id, userId, feedback);
+
+        if (response.length === 0) {
+            throw new NotFoundError('Feedback not found');
+        }
 
         res.status(200).json({
             success: true,
@@ -87,9 +87,9 @@ export const updateProductFeedback = async function(req:Request, res:Response, n
 export const upvoteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
+        const userId = req.authUser!.userId;
 
-        // query db
-        const response = await upvoteFeedback(id);
+        const response = await upvoteFeedback(id, userId);
 
         res.status(200).json({
             success: true,
@@ -104,15 +104,14 @@ export const upvoteProductFeedback = async function(req:Request, res:Response, n
 export const deleteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
-        // make request based on id;
-        const response = await deleteFeedback(id);
-        console.log(response.rows);
+        const userId = req.authUser!.userId;
+        const rowCount = await deleteFeedback(id, userId);
 
-        res.status(200).json({
-            success: true,
-            message: 'Successfully deleted product feedback',
-            data: response.rows,
-        })
+        if (rowCount === 0) {
+            throw new NotFoundError('Feedback not found');
+        }
+
+        res.status(204).send();
     } catch (error) {
         next(error);
     }

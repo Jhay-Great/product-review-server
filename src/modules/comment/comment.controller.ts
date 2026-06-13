@@ -5,7 +5,8 @@ export const addComment = async function(req: Request, res: Response, next: Next
     try {
         const { feedbackId } = req.params;
         const { content } = req.body;
-        const result = await addCommentService(feedbackId, content);
+        const userId = req.authUser!.userId;
+        const result = await addCommentService(feedbackId, content, userId);
         res.status(201).json({
             success: true,
             message: 'Comment added successfully',
