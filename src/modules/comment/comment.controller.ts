@@ -4,7 +4,7 @@ import {
     getFeedbackComments as getFeedbackCommentsService,
     deleteComment as deleteCommentService,
 } from './comment.service';
-import { NotFoundError } from '../../utils/errors/httpErrors';
+import { BadRequestError, NotFoundError } from '../../utils/errors/httpErrors';
 
 export const addComment = async function (req: Request, res: Response, next: NextFunction) {
     try {
@@ -42,9 +42,14 @@ export const getFeedbackComments = async function (
 
 export const removeComment = async function (req: Request, res: Response, next: NextFunction) {
     try {
-        const { commentId } = req.params;
+        const { commentId, feedbackId } = req.params;
         const userId = req.authUser!.userId;
-        const rowCount = await deleteCommentService(commentId, userId);
+
+        if (isNaN(Number(commentId))) {
+            throw new BadRequestError('Invalid comment ID');
+        }
+
+        const rowCount = await deleteCommentService(commentId, feedbackId, userId);
 
         if (rowCount === 0) {
             throw new NotFoundError('Comment not found');

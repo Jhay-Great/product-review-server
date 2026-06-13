@@ -17,10 +17,14 @@ export const getFeedbackComments = async function (feedbackId: string) {
     return rows;
 };
 
-export const deleteComment = async function (commentId: string, userId: string) {
-    const { rowCount } = await pool.query('DELETE FROM comments WHERE id = $1 AND user_id = $2', [
-        commentId,
-        userId,
-    ]);
-    return rowCount;
+export const deleteComment = async function (
+    commentId: string,
+    feedbackId: string,
+    userId: string
+) {
+    const { rowCount } = await pool.query(
+        'DELETE FROM comments WHERE id = $1 AND feedback_id=$2 AND user_id = $3',
+        [commentId, feedbackId, userId]
+    );
+    return rowCount ?? 0;
 };
