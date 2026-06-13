@@ -1,57 +1,57 @@
 export interface ProductFeedback {
-  currentUser: User,
-  productRequests: Feedback[],
+    currentUser: User;
+    productRequests: Feedback[];
 }
 
 export interface Feedback {
-  id: string;
-  title: string;
-  category: string;
-  upvotes: number;
-  status: string;
-  description: string;
-  comments: Comment[];
+    id: string;
+    title: string;
+    category: string;
+    upvotes: number;
+    status: string;
+    description: string;
+    comments: Comment[];
 }
 
 export interface Comment {
-  id: string;
-  content: string;
-  user: User;
+    id: string;
+    content: string;
+    user: User;
 }
 
 export interface User {
-  image: string;
-  name: string;
-  firstname: string;
-  lastname: string;
-  username: string;
-  email: string;
-  password: string;
+    image: string;
+    name: string;
+    firstname: string;
+    lastname: string;
+    username: string;
+    email: string;
+    password: string;
 }
 
 export interface CreateFeedback {
-  title: string;
-  category: string;
-  description: string;
+    title: string;
+    category: string;
+    description: string;
 }
 
 export interface UpdateFeedback {
-  title?: string;
-  category?: string;
-  description?: string;
-  status?: string;
+    title?: string;
+    category?: string;
+    description?: string;
+    status?: string;
 }
 
 export interface UserLogin {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 export interface UserRegistration {
-  firstname: string;
-  lastname: string;
-  email: string;
-  username:string;
-  password: string;
-  confirmPassword: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
 }

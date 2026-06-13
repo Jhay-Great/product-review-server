@@ -6,11 +6,15 @@ import {
     deleteFeedback,
     editFeedback,
     upvoteFeedback,
- } from './feedback.service';
+} from './feedback.service';
 import { NotFoundError } from '../../utils/errors/httpErrors';
 import { UpdateFeedback } from '../../types/models';
 
-export const getAllProductFeedbacks = async function(req: Request, res:Response, next: NextFunction) {
+export const getAllProductFeedbacks = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
@@ -27,7 +31,7 @@ export const getAllProductFeedbacks = async function(req: Request, res:Response,
     }
 };
 
-export const getProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
+export const getProductFeedback = async function (req: Request, res: Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
 
@@ -41,13 +45,17 @@ export const getProductFeedback = async function(req:Request, res:Response, next
             success: true,
             message: 'Successful gets product feedback',
             data: response,
-        })
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const createProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
+export const createProductFeedback = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const data = req.body;
         const userId = req.authUser!.userId;
@@ -57,13 +65,17 @@ export const createProductFeedback = async function(req:Request, res:Response, n
             success: true,
             message: 'Successful creates product feedback',
             data: response,
-        })
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const updateProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
+export const updateProductFeedback = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const id = req.params.feedbackId;
         const userId = req.authUser!.userId;
@@ -78,13 +90,17 @@ export const updateProductFeedback = async function(req:Request, res:Response, n
             success: true,
             message: 'Successful updates product feedback',
             data: response,
-        })
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const upvoteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
+export const upvoteProductFeedback = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const id = req.params.feedbackId;
         const userId = req.authUser!.userId;
@@ -95,13 +111,17 @@ export const upvoteProductFeedback = async function(req:Request, res:Response, n
             success: true,
             message: 'Upvoted feedback successfully',
             data: response,
-        })
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const deleteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
+export const deleteProductFeedback = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const id = req.params.feedbackId;
         const userId = req.authUser!.userId;
@@ -115,4 +135,4 @@ export const deleteProductFeedback = async function(req:Request, res:Response, n
     } catch (error) {
         next(error);
     }
-}
+};

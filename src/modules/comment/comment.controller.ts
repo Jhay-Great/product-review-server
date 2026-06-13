@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { addComment as addCommentService, getFeedbackComments as getFeedbackCommentsService } from './comment.service';
+import {
+    addComment as addCommentService,
+    getFeedbackComments as getFeedbackCommentsService,
+} from './comment.service';
 
-export const addComment = async function(req: Request, res: Response, next: NextFunction) {
+export const addComment = async function (req: Request, res: Response, next: NextFunction) {
     try {
         const { feedbackId } = req.params;
         const { content } = req.body;
@@ -15,9 +18,13 @@ export const addComment = async function(req: Request, res: Response, next: Next
     } catch (error) {
         next(error);
     }
-}
+};
 
-export const getFeedbackComments = async function(req: Request, res: Response, next: NextFunction) {
+export const getFeedbackComments = async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
         const { feedbackId } = req.params;
         const result = await getFeedbackCommentsService(feedbackId);

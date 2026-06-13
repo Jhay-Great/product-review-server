@@ -20,11 +20,11 @@ app.use(morgan('dev'));
 app.use('/api/v1/', router);
 
 // single catch-all for unmatched routes — forward a NotFoundError to the global handler
-app.use((req:Request, res:Response, next:NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     next(new NotFoundError(`Route ${req.method} ${req.url} not found`));
 });
 
 // global error handling
-app.use(errorHandler)
+app.use(errorHandler);
 
 export default app;

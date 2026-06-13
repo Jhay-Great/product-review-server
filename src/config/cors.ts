@@ -9,7 +9,7 @@ const corsConfig = cors({
         } else if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
             callback(null, true);
         } else {
-            callback( new Error('Not allowed by CORS'))
+            callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true,
