@@ -1,17 +1,17 @@
 import pool from "../../config/database";
 
-export const addComment = async function(feedbackId:string, comment: any) {
+export const addComment = async function(feedbackId: string, content: string) {
     const { rows } = await pool.query(
-        'INSERT INTO comment (comment, feedbackId) VALUES ($1, $2) RETURNING *',
-        [comment, feedbackId]
+        'INSERT INTO comments (content, feedback_id) VALUES ($1, $2) RETURNING *',
+        [content, feedbackId]
     );
 
     return rows;
 };
 
-export const getFeedbackComments = async function(feedbackId:string) {
+export const getFeedbackComments = async function(feedbackId: string) {
     const { rows } = await pool.query(
-        'SELECT * FROM comments WHERE feedbackId = $1',
+        'SELECT * FROM comments WHERE feedback_id = $1',
         [feedbackId]
     );
 
