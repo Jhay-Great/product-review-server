@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
-import { 
-    getAllFeedbacks, 
-    getFeedbackById, 
+import {
+    getAllFeedbacks,
+    getFeedbackById,
     createFeeback,
     deleteFeedback,
     editFeedback,
     upvoteFeedback,
- } from '../services/pg-services/feedbackService';
+ } from './feedback.service';
 
 export const getAllProductFeedbacks = async function(req: Request, res:Response) {
     try {
         const data = await getAllFeedbacks();
-        
+
         res.status(200).json({
             success: true,
             message: 'Successful',
@@ -28,7 +28,7 @@ export const getProductFeedback = async function(req:Request, res:Response) {
         // if (!id) {
         //     throw new Error('Data not available');
         // }
-        
+
         // make request based on id;
         const response = await getFeedbackById(id);
 
@@ -46,7 +46,7 @@ export const getProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-        
+
     }
 }
 
@@ -64,7 +64,7 @@ export const createProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-        
+
     }
 }
 
@@ -119,6 +119,6 @@ export const deleteProductFeedback = async function(req:Request, res:Response) {
             data: response.rows,
         })
     } catch (error) {
-        
+
     }
 }

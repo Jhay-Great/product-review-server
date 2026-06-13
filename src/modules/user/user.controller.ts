@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
-import { comparePassword } from "../utils/hash";
+import { comparePassword } from "../../utils/hash";
 import {
   userLogin,
   userRegistration,
   createPasswordResetRequest,
   verifyPasswordResetToken,
   updatePassword,
-} from "../services/pg-services/userServices";
-import { generateToken } from "../utils/jwt";
-import { NotFoundError, UnauthorizedError, ConflictError, BadRequestError } from "../utils/errors/httpErrors";
-import { sendResetPasswordEmail } from "../utils/email";
+} from "./user.service";
+import { generateToken } from "../../utils/jwt";
+import { NotFoundError, UnauthorizedError, ConflictError, BadRequestError } from "../../utils/errors/httpErrors";
+import { sendResetPasswordEmail } from "../../utils/email";
 
 export const login = async (req: Request, res: Response) => {
   const loginData = req.body;

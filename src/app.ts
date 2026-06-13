@@ -2,8 +2,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 
 import router from './routes';
-import corsConfig from './config/corsConfig';
-import { errorHandler } from './middleware/errorHandler';
+import corsConfig from './config/cors';
+import { errorHandler } from './middleware/error.middleware';
 import { NotFoundError } from './utils/errors/httpErrors';
 
 const app = express();

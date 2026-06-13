@@ -2,8 +2,8 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 import app from './app';
-import mongoDB from './config/db';
-import pool, { checkDBServer } from './config/db.pgConfig';
+import mongoDB from './config/database.mongo';
+import pool, { checkDBServer } from './config/database';
 
 
 const PORT = process.env.PORT || 9000;
@@ -20,7 +20,7 @@ const startServer = async function() {
         app.listen(PORT, () => {
             console.log(`Server is live on port ${PORT}`)
         })
-        
+
     } catch (error) {
         console.log('Failed to start server: ', error);
         process.exit(1);
@@ -28,4 +28,3 @@ const startServer = async function() {
 }
 
 startServer();
-

@@ -1,7 +1,7 @@
-import pool from "../../config/db.pgConfig";
+import pool from "../../config/database";
 import { hashPassword } from "../../utils/hash";
 import { randomBytes, createHash } from "crypto";
-import { UserLogin, UserRegistration } from "../../models/product.interface";
+import { UserLogin, UserRegistration } from "../../types/models";
 
 export const userLogin = async (loginData: UserLogin) => {
   const { email } = loginData;
@@ -16,7 +16,7 @@ export const userRegistration = async (registrationData: UserRegistration) => {
   const hashedPassword = await hashPassword(password);
 
   const { rows } = await pool.query(
-    `INSERT INTO users (firstname, lastname, email, username, password) 
+    `INSERT INTO users (firstname, lastname, email, username, password)
         VALUES ($1, $2, $3, $4, $5) RETURNING firstname, lastname, email, username`,
     [firstname, lastname, email, username, hashedPassword]
   );

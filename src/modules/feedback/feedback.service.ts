@@ -1,12 +1,12 @@
-import pool from "../../config/db.pgConfig";
-import { CreateFeedback } from "../../models/product.interface";
+import pool from "../../config/database";
+import { CreateFeedback } from "../../types/models";
 
 const FEEDBACK_DB = 'feedback';
 
 export const createFeeback = async function(data: CreateFeedback) {
     const { title, category, description } = data;
     const { rows } = await pool.query(
-        `INSERT INTO feedback (title, category, description) VALUES ($1, $2, $3) RETURNING *`, 
+        `INSERT INTO feedback (title, category, description) VALUES ($1, $2, $3) RETURNING *`,
         [title, category, description]
     );
     console.log('rows: ', rows);
@@ -36,7 +36,7 @@ export const upvoteFeedback = async function(id: string) {
         'UPDATE feedback SET upvotes = upvotes + 1 WHERE id = $1 RETURNING upvotes',
         [id]
     );
-    
+
     if (rows.length === 0) {
         throw new Error(`No feedback found with id: ${id}`);
     }

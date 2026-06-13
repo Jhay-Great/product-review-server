@@ -1,4 +1,4 @@
-import pool from "../../config/db.pgConfig";
+import pool from "../../config/database";
 
 export const addComment = async function(feedbackId:string, comment: any) {
     const { rows } = await pool.query(

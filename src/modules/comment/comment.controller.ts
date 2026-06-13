@@ -12,15 +12,15 @@ export const addComment = async function(req: Request, res: Response) {
         })
 
     } catch (error) {
-        
+
     }
 }
 
 export const getFeedbackComments = async function(req: Request, res:Response) {
     try {
         const { feedbackId } = req.params;
-        
+
     } catch (error) {
-        
+
     }
 };
