@@ -4,29 +4,12 @@ import {
   createPasswordResetRequest,
   verifyPasswordResetToken,
   updatePassword,
-} from "../services/pg-services/userServices";
-import { loginWithEmailPassword } from "../services/auth.service";
-import { ConflictError, BadRequestError } from "../utils/errors/httpErrors";
-import { sendResetPasswordEmail } from "../utils/email";
-
-export const login = async (req: Request, res: Response) => {
-  const result = await loginWithEmailPassword(req.body);
-
-  res.status(200).json({
-    success: true,
-    message: "Login successful",
-    data: result.user,
-    token: result.accessToken,
-  });
-};
+} from "./user.service";
+import { ConflictError, BadRequestError } from "../../utils/errors/httpErrors";
+import { sendResetPasswordEmail } from "../../utils/email";
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   const registrationData = req.body;
-
-  if (registrationData.password !== registrationData.confirmPassword) {
-    next(new BadRequestError('Passwords do not match'));
-    return;
-  }
 
   try {
     const response = await userRegistration(registrationData);
@@ -58,9 +41,7 @@ export const forgottenPassword = async (req: Request, res: Response, next: NextF
     const frontend = process.env.FRONTEND_URL || 'http://localhost:4200';
     const resetUrl = `${frontend}/reset-password?token=${result.token}&email=${encodeURIComponent(result.email)}`;
 
-    console.log('about to create mail');
-    const messagePreview = await sendResetPasswordEmail(result.email, resetUrl);
-    console.log(messagePreview);
+    await sendResetPasswordEmail(result.email, resetUrl);
 
     return res.status(200).json({ success: true, message: 'If that email exists, a reset link has been sent.' });
   } catch (error) {
@@ -72,8 +53,6 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   const { email, token, password } = req.body;
 
   try {
-    if (!email || !token || !password) throw new BadRequestError('Missing required fields');
-
     const verified = await verifyPasswordResetToken(email, token);
     if (!verified) throw new BadRequestError('Invalid or expired token');
 
@@ -85,4 +64,3 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const deleteUser = (req: Request, res: Response) => {};

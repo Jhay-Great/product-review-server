@@ -11,7 +11,9 @@ const corsConfig = cors({
         } else {
             callback( new Error('Not allowed by CORS'))
         }
-    }
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
 });
 
 export default corsConfig;
