@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import {
     addComment as addCommentService,
     getFeedbackComments as getFeedbackCommentsService,
+    deleteComment as deleteCommentService,
 } from './comment.service';
+import { BadRequestError, NotFoundError } from '../../utils/errors/httpErrors';
 
 export const addComment = async function (req: Request, res: Response, next: NextFunction) {
     try {
@@ -33,6 +35,27 @@ export const getFeedbackComments = async function (
             message: 'Comments retrieved successfully',
             data: result,
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const removeComment = async function (req: Request, res: Response, next: NextFunction) {
+    try {
+        const { commentId, feedbackId } = req.params;
+        const userId = req.authUser!.userId;
+
+        if (isNaN(Number(commentId))) {
+            throw new BadRequestError('Invalid comment ID');
+        }
+
+        const rowCount = await deleteCommentService(commentId, feedbackId, userId);
+
+        if (rowCount === 0) {
+            throw new NotFoundError('Comment not found');
+        }
+
+        res.status(204).send();
     } catch (error) {
         next(error);
     }
