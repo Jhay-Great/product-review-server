@@ -1,67 +1,46 @@
 import { NextFunction, Request, Response } from "express";
-import { comparePassword } from "../utils/hash";
 import {
-  userLogin,
   userRegistration,
   createPasswordResetRequest,
   verifyPasswordResetToken,
   updatePassword,
 } from "../services/pg-services/userServices";
-import { generateToken } from "../utils/jwt";
-import { NotFoundError, UnauthorizedError, ConflictError, BadRequestError } from "../utils/errors/httpErrors";
+import { loginWithEmailPassword } from "../services/auth.service";
+import { ConflictError, BadRequestError } from "../utils/errors/httpErrors";
 import { sendResetPasswordEmail } from "../utils/email";
 
 export const login = async (req: Request, res: Response) => {
-  const loginData = req.body;
+  const result = await loginWithEmailPassword(req.body);
 
-  try {
-    // call login service
-    const response = await userLogin(loginData);
-
-    if (response.length === 0) {
-      throw new NotFoundError("Email does not exist");
-    }
-
-    const hashedPassword = response[0].password;
-    const isMatch = await comparePassword(loginData.password, hashedPassword);
-
-    if (!isMatch) {
-      throw new UnauthorizedError("Password is incorrect");
-    }
-
-    const { password, ...userData } = response[0];
-    const { id } = userData;
-    const token = generateToken(id);
-
-    res.status(200).json({
-      success: true,
-      message: "Login successfully",
-      data: userData,
-      token,
-    });
-  } catch (error) {
-    throw error;
-  }
+  res.status(200).json({
+    success: true,
+    message: "Login successful",
+    data: result.user,
+    token: result.accessToken,
+  });
 };
 
-export const register = async (req: Request, res: Response, next:NextFunction) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
   const registrationData = req.body;
 
+  if (registrationData.password !== registrationData.confirmPassword) {
+    next(new BadRequestError('Passwords do not match'));
+    return;
+  }
+
   try {
-    // service call
     const response = await userRegistration(registrationData);
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: "Login successfully",
+      message: "Registered successfully",
       data: response,
     });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      // refactor later (handle it properly)
-      return next(new ConflictError("Duplicate email"));
+    if ((error as any)?.code === '23505') {
+      return next(new ConflictError('Email already in use'));
     }
-    throw error;
+    return next(error);
   }
 };
 
