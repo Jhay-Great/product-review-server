@@ -1,6 +1,7 @@
 // @ts-check
 const tsParser = require('@typescript-eslint/parser');
 const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const prettierConfig = require('eslint-config-prettier');
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 module.exports = [
@@ -27,4 +28,6 @@ module.exports = [
       'no-console': 'warn',
     },
   },
+  // must be last — disables ESLint rules that conflict with Prettier
+  prettierConfig,
 ];
