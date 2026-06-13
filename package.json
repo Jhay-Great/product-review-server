@@ -21,13 +21,10 @@
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/helmet": "^0.0.48",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.1.0",
     "@types/pg": "^8.15.5",
-    "@typescript-eslint/eslint-plugin": "^8.61.0",
-    "@typescript-eslint/parser": "^8.61.0",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
@@ -54,7 +51,7 @@
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "eslint --fix",
+      "eslint --fix --max-warnings 0",
       "prettier --write"
     ]
   }
