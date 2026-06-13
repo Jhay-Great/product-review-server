@@ -9,13 +9,15 @@ import {
  } from './feedback.controller';
 import { requireAuth } from '../../middleware/auth.middleware';
 import commentRoute from '../comment/comment.routes';
+import { validate } from '../../middleware/validate.middleware';
+import { CreateFeedbackSchema, UpdateFeedbackSchema } from './feedback.schema';
 
 const productFeedbackRoute = express.Router();
 
 productFeedbackRoute.get('/', getAllProductFeedbacks);
-productFeedbackRoute.post('/', requireAuth, createProductFeedback);
+productFeedbackRoute.post('/', requireAuth, validate(CreateFeedbackSchema), createProductFeedback);
 productFeedbackRoute.get('/:feedbackId', getProductFeedback);
-productFeedbackRoute.put('/:feedbackId', requireAuth, updateProductFeedback);
+productFeedbackRoute.put('/:feedbackId', requireAuth, validate(UpdateFeedbackSchema), updateProductFeedback);
 productFeedbackRoute.delete('/:feedbackId', requireAuth, deleteProductFeedback);
 productFeedbackRoute.post('/upvote/:feedbackId', upvoteProductFeedback);
 
