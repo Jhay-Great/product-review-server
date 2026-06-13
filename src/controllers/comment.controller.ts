@@ -1,26 +1,20 @@
 import { Request, Response } from 'express';
 
-export const addComment = async function(req: Request, res: Response) {
+export const addComment = async function (req: Request, res: Response) {
     try {
-        const comment = req.body;
-        const feedbackId = req.params.feedbackId;
+        const _comment = req.body;
+        const _feedbackId = req.params.feedbackId;
 
         res.status(201).json({
             success: true,
             message: 'Comments added successfully',
             data: [],
-        })
+        });
+    } catch (_error) {}
+};
 
-    } catch (error) {
-        
-    }
-}
-
-export const getFeedbackComments = async function(req: Request, res:Response) {
+export const getFeedbackComments = async function (req: Request, _res: Response) {
     try {
-        const { feedbackId } = req.params;
-        
-    } catch (error) {
-        
-    }
+        const _feedbackId = req.params.feedbackId;
+    } catch (_error) {}
 };

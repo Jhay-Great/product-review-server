@@ -1,40 +1,40 @@
 import { Request, Response } from 'express';
-// import { 
-//     getAllFeedbacks, 
-//     getFeedbackById, 
+// import {
+//     getAllFeedbacks,
+//     getFeedbackById,
 //     createFeeback,
 //     deleteFeedback,
 //  } from '../services/feedbackService';
-import { 
-    getAllFeedbacks, 
-    getFeedbackById, 
+import {
+    getAllFeedbacks,
+    getFeedbackById,
     createFeeback,
     deleteFeedback,
     editFeedback,
     upvoteFeedback,
- } from '../services/pg-services/feedbackService';
+} from '../services/pg-services/feedbackService';
 
-export const getAllProductFeedbacks = async function(req: Request, res:Response) {
+export const getAllProductFeedbacks = async function (req: Request, res: Response) {
     try {
         const data = await getAllFeedbacks();
-        
+
         res.status(200).json({
             success: true,
             message: 'Successful',
             data: data,
-        })
+        });
     } catch (error) {
         console.log('an error occurred: ', error);
     }
 };
 
-export const getProductFeedback = async function(req:Request, res:Response) {
+export const getProductFeedback = async function (req: Request, res: Response) {
     try {
         const id = req.params.feedbackId;
         // if (!id) {
         //     throw new Error('Data not available');
         // }
-        
+
         // make request based on id;
         const response = await getFeedbackById(id);
 
@@ -43,20 +43,18 @@ export const getProductFeedback = async function(req:Request, res:Response) {
                 success: false,
                 message: 'Item could not be found',
                 data: response,
-            })
+            });
         }
 
         res.status(200).json({
             success: true,
             message: 'Successful gets product feedback',
             data: response,
-        })
-    } catch (error) {
-        
-    }
-}
+        });
+    } catch (_error) {}
+};
 
-export const createProductFeedback = async function(req:Request, res:Response) {
+export const createProductFeedback = async function (req: Request, res: Response) {
     try {
         const data = req.body;
         console.log('data from client: ', data);
@@ -68,13 +66,11 @@ export const createProductFeedback = async function(req:Request, res:Response) {
             success: true,
             message: 'Successful creates product feedback',
             data: response,
-        })
-    } catch (error) {
-        
-    }
-}
+        });
+    } catch (_error) {}
+};
 
-export const updateProductFeedback = async function(req:Request, res:Response) {
+export const updateProductFeedback = async function (req: Request, res: Response) {
     try {
         const id = req.params.feedbackId;
         const feedback = req.body;
@@ -85,13 +81,11 @@ export const updateProductFeedback = async function(req:Request, res:Response) {
             success: true,
             message: 'Successful updates product feedback',
             data: response,
-        })
-    } catch (error) {
+        });
+    } catch (_error) {}
+};
 
-    }
-}
-
-export const upvoteProductFeedback = async function(req:Request, res:Response) {
+export const upvoteProductFeedback = async function (req: Request, res: Response) {
     try {
         const id = req.params.feedbackId;
 
@@ -102,17 +96,17 @@ export const upvoteProductFeedback = async function(req:Request, res:Response) {
             success: true,
             message: 'Upvoted feedback successfully',
             data: response,
-        })
+        });
     } catch (error) {
         console.log(error);
         res.status(401).json({
             success: false,
             message: 'Failed to upvote feedback',
-        })
+        });
     }
-}
+};
 
-export const deleteProductFeedback = async function(req:Request, res:Response) {
+export const deleteProductFeedback = async function (req: Request, res: Response) {
     try {
         const id = req.params.feedbackId;
         // make request based on id;
@@ -123,8 +117,6 @@ export const deleteProductFeedback = async function(req:Request, res:Response) {
             success: true,
             message: 'Successfully deleted product feedback',
             data: response.rows,
-        })
-    } catch (error) {
-        
-    }
-}
+        });
+    } catch (_error) {}
+};

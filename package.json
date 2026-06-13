@@ -6,7 +6,12 @@
     "build": "tsc",
     "dev": "nodemon src/server.ts",
     "start": "tsc && node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +23,15 @@
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.1.0",
     "@types/pg": "^8.15.5",
+    "@typescript-eslint/eslint-plugin": "^8.61.0",
+    "@typescript-eslint/parser": "^8.61.0",
+    "eslint": "^10.5.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "morgan": "^1.10.1",
     "nodemon": "^3.1.10",
+    "prettier": "^3.8.4",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
@@ -35,5 +47,11 @@
     "mongodb": "^6.18.0",
     "mongoose": "^8.17.0",
     "pg": "^8.16.3"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
