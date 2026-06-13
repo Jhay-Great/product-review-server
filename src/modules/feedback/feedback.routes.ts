@@ -16,7 +16,7 @@ productFeedbackRoute.get('/', getAllProductFeedbacks);
 productFeedbackRoute.post('/', requireAuth, createProductFeedback);
 productFeedbackRoute.get('/:feedbackId', getProductFeedback);
 productFeedbackRoute.put('/:feedbackId', requireAuth, updateProductFeedback);
-productFeedbackRoute.delete('/:feedbackId', deleteProductFeedback);
+productFeedbackRoute.delete('/:feedbackId', requireAuth, deleteProductFeedback);
 productFeedbackRoute.post('/upvote/:feedbackId', upvoteProductFeedback);
 
 // comment routes

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
     getAllFeedbacks,
     getFeedbackById,
@@ -7,8 +7,9 @@ import {
     editFeedback,
     upvoteFeedback,
  } from './feedback.service';
+import { NotFoundError } from '../../utils/errors/httpErrors';
 
-export const getAllProductFeedbacks = async function(req: Request, res:Response) {
+export const getAllProductFeedbacks = async function(req: Request, res:Response, next: NextFunction) {
     try {
         const data = await getAllFeedbacks();
 
@@ -18,26 +19,19 @@ export const getAllProductFeedbacks = async function(req: Request, res:Response)
             data: data,
         })
     } catch (error) {
-        console.log('an error occurred: ', error);
+        next(error);
     }
 };
 
-export const getProductFeedback = async function(req:Request, res:Response) {
+export const getProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
-        // if (!id) {
-        //     throw new Error('Data not available');
-        // }
 
         // make request based on id;
         const response = await getFeedbackById(id);
 
         if (!response.length) {
-            res.status(404).json({
-                success: false,
-                message: 'Item could not be found',
-                data: response,
-            })
+            throw new NotFoundError('Feedback not found');
         }
 
         res.status(200).json({
@@ -46,16 +40,17 @@ export const getProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-
+        next(error);
     }
 }
 
-export const createProductFeedback = async function(req:Request, res:Response) {
+export const createProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const data = req.body;
+        const userId = req.authUser!.userId;
         console.log('data from client: ', data);
         // make request
-        const response = await createFeeback(data);
+        const response = await createFeeback(data, userId);
         console.log('response: ', response);
 
         res.status(200).json({
@@ -64,11 +59,11 @@ export const createProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-
+        next(error);
     }
 }
 
-export const updateProductFeedback = async function(req:Request, res:Response) {
+export const updateProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
         const feedback = req.body;
@@ -81,11 +76,11 @@ export const updateProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-
+        next(error);
     }
 }
 
-export const upvoteProductFeedback = async function(req:Request, res:Response) {
+export const upvoteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
 
@@ -98,15 +93,11 @@ export const upvoteProductFeedback = async function(req:Request, res:Response) {
             data: response,
         })
     } catch (error) {
-        console.log(error);
-        res.status(401).json({
-            success: false,
-            message: 'Failed to upvote feedback',
-        })
+        next(error);
     }
 }
 
-export const deleteProductFeedback = async function(req:Request, res:Response) {
+export const deleteProductFeedback = async function(req:Request, res:Response, next: NextFunction) {
     try {
         const id = req.params.feedbackId;
         // make request based on id;
@@ -119,6 +110,6 @@ export const deleteProductFeedback = async function(req:Request, res:Response) {
             data: response.rows,
         })
     } catch (error) {
-
+        next(error);
     }
 }

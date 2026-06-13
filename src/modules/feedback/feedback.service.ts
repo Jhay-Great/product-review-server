@@ -3,11 +3,11 @@ import { CreateFeedback } from "../../types/models";
 
 const FEEDBACK_DB = 'feedback';
 
-export const createFeeback = async function(data: CreateFeedback) {
+export const createFeeback = async function(data: CreateFeedback, userId: string) {
     const { title, category, description } = data;
     const { rows } = await pool.query(
-        `INSERT INTO feedback (title, category, description) VALUES ($1, $2, $3) RETURNING *`,
-        [title, category, description]
+        `INSERT INTO feedback (title, category, description, user_id) VALUES ($1, $2, $3, $4) RETURNING *`,
+        [title, category, description, userId]
     );
     console.log('rows: ', rows);
     return rows;
