@@ -29,6 +29,5 @@ productFeedbackRoute.post('/upvote/:feedbackId', authRateLimit, requireAuth, upv
 
 // comment routes
 productFeedbackRoute.use('/:feedbackId/comments', commentRoute);
-// productFeedbackRoute.post('/:feedbackId/')
 
 export default productFeedbackRoute;

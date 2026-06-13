@@ -1,7 +1,7 @@
 import { comparePassword } from '../../utils/hash';
 import { generateToken } from '../../utils/jwt';
 import { UnauthorizedError } from '../../utils/errors/httpErrors';
-import { userLogin } from '../user/user.service';
+import pool from '../../config/database';
 
 type AuthProvider = 'local' | 'google';
 
@@ -61,7 +61,10 @@ const mapLocalUser = (row: Record<string, unknown>): AuthUser => {
 export const loginWithEmailPassword = async (
     credentials: AuthLoginData
 ): Promise<AuthLoginPayload> => {
-    const rows = await userLogin(credentials);
+    const { rows } = await pool.query(
+        `SELECT id, firstname, lastname, email, username, password FROM users WHERE email = $1`,
+        [credentials.email]
+    );
 
     if (!rows.length) {
         throw new UnauthorizedError('Invalid credentials');

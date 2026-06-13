@@ -1,16 +1,7 @@
 import pool from '../../config/database';
 import { hashPassword } from '../../utils/hash';
 import { randomBytes, createHash } from 'crypto';
-import { UserLogin, UserRegistration } from '../../types/models';
-
-export const userLogin = async (loginData: UserLogin) => {
-    const { email } = loginData;
-    const { rows } = await pool.query(
-        `SELECT id, firstname, lastname, email, username, password FROM users WHERE email = $1`,
-        [email]
-    );
-    return rows;
-};
+import { UserRegistration } from '../../types/models';
 
 export const userRegistration = async (registrationData: UserRegistration) => {
     const { firstname, lastname, email, username, password } = registrationData;
